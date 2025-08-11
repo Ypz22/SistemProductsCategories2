@@ -42,7 +42,7 @@ services:
 
   app-products:
     build:
-      context: ./backend/app-products
+      context: ./backend/products
       dockerfile: Dockerfile
     container_name: c-app-products
     restart: always
