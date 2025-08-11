@@ -2,24 +2,27 @@ FROM openjdk:17-jdk-slim as builder
 
 WORKDIR /app
 
-COPY ./pom.xml /app
-COPY ./.mvn ./.mvn
-COPY ./mvnw ./mvnw
-COPY ./pom.xml ./pom.xml
+# Copiar archivos necesarios para bajar dependencias
+COPY pom.xml mvnw ./
+COPY .mvn .mvn
 
-RUN ./mvnw clean package -Dmaven.test.skip -Dmaven.main.skip -Dspring-boot.repackage.skip && rm -r ./target/
-#RUN ./mvnw dependency:go-offline
-COPY ./src ./src
+# Descargar dependencias antes (cache)
+RUN ./mvnw dependency:go-offline
 
+# Copiar código fuente
+COPY src src
+
+# Construir jar (sin tests para acelerar)
 RUN ./mvnw clean package -DskipTests
 
+# Stage final: imagen ligera con solo JRE y jar
 FROM openjdk:17-jdk-slim
 
 WORKDIR /app
-RUN mkdir ./logs
-COPY --from=builder /app/target/categories-0.0.1-SNAPSHOT.jar .
+RUN mkdir -p logs
+
+COPY --from=builder /app/target/*.jar app.jar
+
 EXPOSE 8081
 
-ENTRYPOINT ["java", "-jar", "categories-0.0.1-SNAPSHOT.jar"]
-
-
+ENTRYPOINT ["java", "-jar", "app.jar"]

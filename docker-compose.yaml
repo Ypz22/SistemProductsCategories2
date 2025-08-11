@@ -13,6 +13,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: test
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
     ports:
       - "3306:3306"
     networks:
@@ -21,33 +23,45 @@ services:
       - db-data:/var/lib/mysql
 
   app-categories:
-    image: ypz22/img-app-categories:latest
+    build:
+      context: ./backend/categories
+      dockerfile: Dockerfile
     container_name: c-app-categories
     restart: always
     ports:
       - "8082:8082"
     environment:
       DB_HOST: test-db2
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: test
     depends_on:
       - mysql
     networks:
       - test-network
 
   app-products:
-    image: ypz22/img-app-products:latest
+    build:
+      context: ./backend/app-products
+      dockerfile: Dockerfile
     container_name: c-app-products
     restart: always
     ports:
       - "8081:8081"
     environment:
       DB_HOST: test-db2
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: test
     depends_on:
       - mysql
     networks:
       - test-network
 
   frontend:
-    image: ypz22/img-app-product-category:latest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     container_name: c-sistema
     restart: always
     ports:
