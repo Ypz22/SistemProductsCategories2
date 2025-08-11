@@ -1,0 +1,62 @@
+version: '3.8'
+
+networks:
+  test-network:
+    driver: bridge
+
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: test-db2
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: test
+    ports:
+      - "3306:3306"
+    networks:
+      - test-network
+    volumes:
+      - db-data:/var/lib/mysql
+
+  app-categories:
+    image: ypz22/img-app-categories:latest
+    container_name: c-app-categories
+    restart: always
+    ports:
+      - "8082:8082"
+    environment:
+      DB_HOST: test-db2
+    depends_on:
+      - mysql
+    networks:
+      - test-network
+
+  app-products:
+    image: ypz22/img-app-products:latest
+    container_name: c-app-products
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      DB_HOST: test-db2
+    depends_on:
+      - mysql
+    networks:
+      - test-network
+
+  frontend:
+    image: ypz22/img-app-product-category:latest
+    container_name: c-sistema
+    restart: always
+    ports:
+      - "8080:80"
+    depends_on:
+      - app-categories
+      - app-products
+    networks:
+      - test-network
+
+volumes:
+  db-data:

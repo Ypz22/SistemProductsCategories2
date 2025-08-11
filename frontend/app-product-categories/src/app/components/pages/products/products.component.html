@@ -1,0 +1,139 @@
+<div class="container">
+    <header class="header">
+        <h1>Product Administration</h1>
+    </header>
+
+    <div class="controls">
+        <button class="btn btn-primary" (click)="addNewProduct()">
+            <span class="icon-plus"></span>
+            Add New Product
+        </button>
+    </div>
+
+    <div class="table-container">
+        <table class="table" id="productsTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Product Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of products">
+                    <td class="product-id">{{ product.id }}</td>
+                    <td class="product-name">{{ product.name }}</td>
+                    <td class="product-description">{{ product.description }}</td>
+                    <td class="product-price">${{ product.price }}</td>
+                    <td class="actions">
+                        <button class="btn btn-edit" (click)="editProduct(product.id)">
+                            <span class="icon-edit"></span>
+                            Edit
+                        </button>
+                        <button class="btn btn-delete" (click)="deleteProduct(product.id)">
+                            <span class="icon-delete"></span>
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal Crear Producto -->
+<div class="modal-overlay" id="createProductModal">
+    <div class="modal-content">
+        <h2>Create New Product</h2>
+        <form (ngSubmit)="createProduct()" #productForm="ngForm">
+            <div class="form-group">
+                <label for="name">Product Name</label>
+                <input type="text" id="name" class="form-input" [(ngModel)]="newProduct.name" name="name" required
+                    minlength="3" maxlength="100" #nameInput="ngModel" />
+                <div *ngIf="nameInput.invalid && nameInput.touched" class="error">
+                    <small *ngIf="nameInput.errors?.['required']">Name is required.</small>
+                    <small *ngIf="nameInput.errors?.['minlength']">Minimum 3 characters.</small>
+                    <small *ngIf="nameInput.errors?.['maxlength']">Maximum 100 characters.</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" class="form-input" [(ngModel)]="newProduct.description" name="description"
+                    required minlength="5" maxlength="255" rows="3" #descInput="ngModel"></textarea>
+                <div *ngIf="descInput.invalid && descInput.touched" class="error">
+                    <small *ngIf="descInput.errors?.['required']">Description is required.</small>
+                    <small *ngIf="descInput.errors?.['minlength']">Minimum 5 characters.</small>
+                    <small *ngIf="descInput.errors?.['maxlength']">Maximum 255 characters.</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" id="price" class="form-input" [(ngModel)]="newProduct.price" name="price" required
+                    min="0.1" step="0.01" #priceInput="ngModel" />
+                <div *ngIf="priceInput.invalid && priceInput.touched" class="error">
+                    <small *ngIf="priceInput.errors?.['required']">Price is required.</small>
+                    <small *ngIf="priceInput.errors?.['min']">Price must be > 0.</small>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid">
+                    <span class="icon-plus"></span>
+                    Create
+                </button>
+                <button type="button" class="btn btn-delete" (click)="closeModal()">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Editar Producto -->
+<div class="modal-overlay" id="editProductModal">
+    <div class="modal-content">
+        <h2>Edit Product</h2>
+        <form (ngSubmit)="updateProduct()" #editForm="ngForm">
+            <div class="form-group">
+                <label>Name:</label>
+                <input class="form-input" type="text" [(ngModel)]="productToEdit.name" name="name" required
+                    minlength="3" maxlength="100" #editName="ngModel" />
+                <div *ngIf="editName.invalid && editName.touched" class="error">
+                    <small *ngIf="editName.errors?.['required']">Name is required.</small>
+                    <small *ngIf="editName.errors?.['minlength']">Minimum 3 characters.</small>
+                    <small *ngIf="editName.errors?.['maxlength']">Maximum 100 characters.</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Description:</label>
+                <textarea class="form-input" [(ngModel)]="productToEdit.description" name="description" required
+                    minlength="5" maxlength="255" #editDesc="ngModel"></textarea>
+                <div *ngIf="editDesc.invalid && editDesc.touched" class="error">
+                    <small *ngIf="editDesc.errors?.['required']">Description is required.</small>
+                    <small *ngIf="editDesc.errors?.['minlength']">Minimum 5 characters.</small>
+                    <small *ngIf="editDesc.errors?.['maxlength']">Maximum 255 characters.</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Price:</label>
+                <input class="form-input" type="number" [(ngModel)]="productToEdit.price" name="price" required
+                    min="0.1" step="0.01" #editPrice="ngModel" />
+                <div *ngIf="editPrice.invalid && editPrice.touched" class="error">
+                    <small *ngIf="editPrice.errors?.['required']">Price is required.</small>
+                    <small *ngIf="editPrice.errors?.['min']">Price must be > 0.</small>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">Update</button>
+                <button type="button" (click)="closeEditModal()" class="btn">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

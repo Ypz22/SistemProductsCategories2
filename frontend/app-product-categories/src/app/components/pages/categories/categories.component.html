@@ -1,0 +1,119 @@
+<div class="container">
+    <header class="header">
+        <h1>Category Administration</h1>
+    </header>
+
+    <div class="controls">
+        <button class="btn btn-primary" (click)="addNewCategory()">
+            <span class="icon-plus"></span>
+            Add New Category
+        </button>
+    </div>
+
+    <div class="table-container">
+        <table class="table" id="categoriesTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Category Name</th>
+                    <th>Description</th>
+                    <th>Register Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let category of categories">
+                    <td class="category-id">{{ category.id }}</td>
+                    <td class="category-name">{{ category.name }}</td>
+                    <td class="category-description">{{ category.description }}</td>
+                    <td class="category-created-at">{{ category.createdAt }}</td>
+                    <td class="actions">
+                        <button class="btn btn-edit" (click)="editCategory(category.id)">
+                            <span class="icon-edit"></span>
+                            Edit
+                        </button>
+                        <button class="btn btn-delete" (click)="deleteCategory(category.id)">
+                            <span class="icon-delete"></span>
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal Crear Categoría -->
+<div class="modal-overlay" id="createCategoryModal">
+    <div class="modal-content">
+        <h2>Create New Category</h2>
+        <form (ngSubmit)="createCategory()" #categoryForm="ngForm">
+            <div class="form-group">
+                <label for="name">Category Name</label>
+                <input type="text" id="name" class="form-input" [(ngModel)]="newCategory.name" name="name" required
+                    minlength="3" maxlength="100" #nameInput="ngModel" />
+                <div *ngIf="nameInput.invalid && nameInput.touched" class="error">
+                    <small *ngIf="nameInput.errors?.['required']">Name is required.</small>
+                    <small *ngIf="nameInput.errors?.['minlength']">Minimum 3 characters.</small>
+                    <small *ngIf="nameInput.errors?.['maxlength']">Maximum 100 characters.</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" class="form-input" [(ngModel)]="newCategory.description" name="description"
+                    required minlength="5" maxlength="255" rows="3" #descInput="ngModel"></textarea>
+                <div *ngIf="descInput.invalid && descInput.touched" class="error">
+                    <small *ngIf="descInput.errors?.['required']">Description is required.</small>
+                    <small *ngIf="descInput.errors?.['minlength']">Minimum 5 characters.</small>
+                    <small *ngIf="descInput.errors?.['maxlength']">Maximum 255 characters.</small>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="submit" class="btn btn-primary" [disabled]="categoryForm.invalid">
+                    <span class="icon-plus"></span>
+                    Create
+                </button>
+                <button type="button" class="btn btn-delete" (click)="closeModal()">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Editar Categoría -->
+<div class="modal-overlay" id="editCategoryModal">
+    <div class="modal-content">
+        <h2>Edit Category</h2>
+        <form (ngSubmit)="updateCategory()" #editForm="ngForm">
+            <div class="form-group">
+                <label>Name:</label>
+                <input class="form-input" type="text" [(ngModel)]="categoryToEdit.name" name="name" required
+                    minlength="3" maxlength="100" #editName="ngModel" />
+                <div *ngIf="editName.invalid && editName.touched" class="error">
+                    <small *ngIf="editName.errors?.['required']">Name is required.</small>
+                    <small *ngIf="editName.errors?.['minlength']">Minimum 3 characters.</small>
+                    <small *ngIf="editName.errors?.['maxlength']">Maximum 100 characters.</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Description:</label>
+                <textarea class="form-input" [(ngModel)]="categoryToEdit.description" name="description" required
+                    minlength="5" maxlength="255" #editDesc="ngModel"></textarea>
+                <div *ngIf="editDesc.invalid && editDesc.touched" class="error">
+                    <small *ngIf="editDesc.errors?.['required']">Description is required.</small>
+                    <small *ngIf="editDesc.errors?.['minlength']">Minimum 5 characters.</small>
+                    <small *ngIf="editDesc.errors?.['maxlength']">Maximum 255 characters.</small>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">Update</button>
+                <button type="button" (click)="closeEditModal()" class="btn">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

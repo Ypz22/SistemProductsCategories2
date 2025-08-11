@@ -1,0 +1,7 @@
+docker build -t img-app-product-category .
+
+docker run -dit -p 8080:80 --name c-sistema --network test-network img-app-product-category
+
+docker tag img-app-product-category ypz22/img-app-product-category
+
+docker push ypz22/img-app-product-category 

@@ -1,0 +1,11 @@
+docker network create test-network
+
+docker run --name test-db -e MYSQL_ROOT_PASSWORD=admin -e MYSQL_DATABASE=test -p 3306:3306 -d --network test-network mysql
+
+docker build -t img-app-products .
+
+docker run -dit -p 8081:8081 --name c-app-products --network test-network -e DB_HOST=test-db:3306 img-app-products
+
+docker tag img-app-products ypz22/img-app-products 
+
+docker push ypz22/img-app-products  
