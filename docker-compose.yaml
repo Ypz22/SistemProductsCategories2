@@ -60,7 +60,7 @@ services:
 
   frontend:
     build:
-      context: ./frontend
+      context: ./frontend/app-product-categories
       dockerfile: Dockerfile
     container_name: c-sistema
     restart: always
