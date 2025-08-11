@@ -1,4 +1,4 @@
-package com.example.products.config;
+package com.example.products.products.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +22,3 @@ public class WebConfig {
     };
   }
 }
-
-git add ../../backend/categories/src/main/java/com/example/categorias/categories/config/WebConfig.java
-git add ../../backend/products/src/main/java/com/example/products/products/config/WebConfig.java
