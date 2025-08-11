@@ -8,9 +8,7 @@ RUN npm run build -- --configuration production
 
 # Etapa 2: Servidor Nginx
 FROM nginx:alpine
-COPY --from=builder /app/dist/app-product-categories/browser /usr/share/nginx/html
-
-#Usa este archivo para definir cómo responder a las peticiones que lleguen al servidor.
+COPY --from=builder /app/dist/app-product-categories /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-#CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
