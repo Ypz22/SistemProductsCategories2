@@ -10,7 +10,7 @@ RUN npm run build -- --configuration production
 
 # Etapa 2: Servidor Nginx
 FROM nginx:alpine
-COPY --from=builder /app/dist/app-product-categories /usr/share/nginx/html
+COPY --from=builder /app/dist/app-product-categorie/browser /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 CMD ["nginx", "-g", "daemon off;"]
