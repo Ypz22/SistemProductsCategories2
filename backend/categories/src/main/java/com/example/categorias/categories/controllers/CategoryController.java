@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +18,6 @@ import com.example.categorias.categories.models.entities.Category;
 import com.example.categorias.categories.service.CategoryService;
 
 @RestController
-@CrossOrigin(origins = "http://18.117.178.149:8080", allowedHeaders = "*")
 @RequestMapping("/api/categories")
 public class CategoryController {
    private final CategoryService categoryService;

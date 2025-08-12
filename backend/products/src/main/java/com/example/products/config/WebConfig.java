@@ -1,4 +1,4 @@
-package com.example.products.products.config;
+package com.example.products.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.example.categorias.config;
+package com.example.categorias.categories.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
